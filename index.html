@@ -116,7 +116,11 @@
           </div>
           <div>
             <label class="block text-xs font-semibold text-slate-500 mb-1">ZONA</label>
-            <select id="ronda-zone" onchange="onRondaContextChange()" class="w-full bg-blue-50 border border-blue-300 text-blue-900 rounded-lg px-2.5 py-2 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none"></select>
+            <select id="ronda-zone" onchange="onRondaContextChange()" class="w-full bg-blue-50 border border-blue-300 text-blue-900 rounded-lg px-2.5 py-2 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+              <option value="1">Zona 1</option>
+              <option value="2">Zona 2</option>
+              <option value="3">Zona 3</option>
+            </select>
           </div>
         </div>
 
@@ -284,7 +288,12 @@
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse text-xs">
               <thead>
-                <tr id="pdf-rondas-thead-tr" class="bg-slate-100 text-slate-700 border-b border-slate-300"></tr>
+                <tr class="bg-slate-100 text-slate-700 border-b border-slate-300">
+                  <th class="p-2 font-bold">Turno</th>
+                  <th class="p-2 font-bold">Zona 1</th>
+                  <th class="p-2 font-bold">Zona 2</th>
+                  <th class="p-2 font-bold">Zona 3</th>
+                </tr>
               </thead>
               <tbody id="pdf-rondas-tbody" class="divide-y divide-slate-200"></tbody>
             </table>
@@ -305,62 +314,10 @@
     </section>
 
     <!-- ==========================================
-         PESTAÑA 5: CONFIGURACIÓN, ZONAS, QR Y CLOUD
+         PESTAÑA 5: CONFIGURACIÓN, QR Y CONEXIÓN CLOUD
          ========================================== -->
     <section id="tab-config" class="tab-content hidden space-y-4">
       
-      <!-- Gestión de Zonas y Puntos de Checklist -->
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
-        <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
-          <div>
-            <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider">
-              <i class="fa-solid fa-map-location-dot text-blue-600 mr-1.5"></i> Gestión de Zonas y Checklist
-            </h2>
-            <p class="text-xs text-slate-500 mt-0.5">Edita el nombre de cada zona, añade o elimina zonas y configura sus puntos.</p>
-          </div>
-          <button onclick="addNewZone()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-2 rounded-lg text-xs flex items-center space-x-1.5 shrink-0 shadow-sm transition">
-            <i class="fa-solid fa-plus"></i>
-            <span>Nueva Zona</span>
-          </button>
-        </div>
-
-        <!-- Selector de Zona a editar -->
-        <div>
-          <label class="block text-xs font-semibold text-slate-500 mb-1">SELECCIONAR ZONA</label>
-          <select id="config-zone-select" onchange="renderConfigChecklist()" class="w-full bg-blue-50 border border-blue-300 text-blue-900 rounded-lg px-3 py-2 text-sm font-bold outline-none"></select>
-        </div>
-
-        <!-- Editar Nombre de la Zona o Eliminarla -->
-        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
-          <label class="block text-xs font-semibold text-slate-600">NOMBRE DE LA ZONA SELECCIONADA</label>
-          <div class="flex flex-wrap sm:flex-nowrap gap-2">
-            <input type="text" id="edit-zone-name-input" placeholder="Ej. Zona 1" class="flex-1 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm font-semibold focus:ring-2 focus:ring-blue-500 outline-none">
-            <button onclick="renameSelectedZone()" class="bg-slate-800 hover:bg-slate-700 text-white font-bold px-3.5 py-2 rounded-lg text-xs flex items-center space-x-1.5 shrink-0 transition">
-              <i class="fa-solid fa-pen-to-square"></i>
-              <span>Renombrar</span>
-            </button>
-            <button onclick="deleteSelectedZone()" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-bold px-3 py-2 rounded-lg text-xs flex items-center space-x-1 shrink-0 transition" title="Eliminar esta zona">
-              <i class="fa-solid fa-trash-can"></i>
-              <span>Borrar Zona</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Puntos del Checklist de la Zona -->
-        <div class="space-y-2.5 pt-1">
-          <label class="block text-xs font-semibold text-slate-500 uppercase">Puntos de control FOD de esta zona</label>
-          <div class="flex space-x-2">
-            <input type="text" id="new-point-input" placeholder="Añadir nuevo punto de control FOD..." class="flex-1 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
-            <button onclick="addConfigPoint()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-lg text-sm flex items-center space-x-1 shrink-0 transition">
-              <i class="fa-solid fa-plus"></i>
-              <span>Añadir</span>
-            </button>
-          </div>
-
-          <ul id="config-points-list" class="divide-y divide-slate-100 border border-slate-200 rounded-lg overflow-hidden"></ul>
-        </div>
-      </div>
-
       <!-- Panel de Sincronización en la Nube (Firebase) -->
       <div class="bg-white rounded-xl shadow-sm border border-blue-200 p-4 space-y-3">
         <div class="flex items-center justify-between">
@@ -375,7 +332,7 @@
         <div class="space-y-2">
           <label class="block text-xs font-semibold text-slate-600">URL DE FIREBASE REALTIME DATABASE</label>
           <input type="url" id="firebase-url-input"
-            value="https://fod-mro-getafe-v2-default-rtdb.europe-west1.firebasedatabase.app"
+            value="https://fod-mro-getafe-default-rtdb.europe-west1.firebasedatabase.app"
             class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono focus:ring-2 focus:ring-blue-500 outline-none">
         </div>
 
@@ -408,9 +365,38 @@
           <div id="qrcode-box" class="p-3 bg-white border-2 border-slate-900 rounded-xl"></div>
           <p id="qr-url-label" class="text-[11px] font-mono text-slate-500 break-all text-center"></p>
         </div>
+      </div>
+
+      <!-- Configuración de Puntos de Checklist -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
+        <div>
+          <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">
+            <i class="fa-solid fa-list-check text-blue-600 mr-1.5"></i> Configurar Puntos de Checklist
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">Añade o elimina los puntos a supervisar en cada zona del taller.</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">SELECCIONAR ZONA A EDITAR</label>
+          <select id="config-zone-select" onchange="renderConfigChecklist()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm font-bold">
+            <option value="1">Zona 1</option>
+            <option value="2">Zona 2</option>
+            <option value="3">Zona 3</option>
+          </select>
+        </div>
+
+        <div class="flex space-x-2">
+          <input type="text" id="new-point-input" placeholder="Nuevo punto de control FOD..." class="flex-1 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+          <button onclick="addConfigPoint()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-lg text-sm flex items-center space-x-1 shrink-0">
+            <i class="fa-solid fa-plus"></i>
+            <span>Añadir</span>
+          </button>
+        </div>
+
+        <ul id="config-points-list" class="divide-y divide-slate-100 border border-slate-200 rounded-lg overflow-hidden"></ul>
 
         <div class="pt-4 border-t border-slate-100 flex justify-between items-center">
-          <span class="text-xs text-slate-400">FOD MRO Getafe v2.3 PWA</span>
+          <span class="text-xs text-slate-400">FOD MRO Getafe v2.2 PWA</span>
           <button onclick="resetDemoData()" class="text-xs text-red-600 hover:underline font-semibold">
             <i class="fa-solid fa-rotate-left mr-1"></i> Restaurar datos iniciales
           </button>
@@ -463,7 +449,7 @@
       </button>
       <button onclick="switchTab('config')" id="nav-config" class="nav-btn py-2.5 flex flex-col items-center justify-center text-slate-400 font-medium">
         <i class="fa-solid fa-sliders text-lg"></i>
-        <span class="text-[11px] mt-0.5">Zonas/Cloud</span>
+        <span class="text-[11px] mt-0.5">Puntos/Cloud</span>
       </button>
     </div>
   </nav>
@@ -515,36 +501,36 @@
           name: 'Zona 1',
           points: [
             'Bancos libres de tornillería, remaches y restos metálicos',
-            'Zona de utillaje correctamente colocada',
-            'Bancos de trabajo recogidos',
-            'Jaula de elementos auxiliares y maletines ok'
+            'Panorámico de herramientas sombra 100% completo y cuadrado',
+            'Suelo perimetral de bancos barrido y sin virutas',
+            'Contenedores FOD cerrados e identificados correctamente'
           ]
         },
         '2': {
           name: 'Zona 2',
           points: [
-            'Estanterias sin elementos no identificados',
-            'Zona de utillaje correctamente colocada',
-            'Bancos de trabajo recogidos',
-            'Jaula de elementos auxiliares y maletines ok'
+            'Bandejas de tornos y fresadoras limpias de viruta sobrante',
+            'Equipos de medición calibrados y guardados en sus estuches',
+            'Ausencia de trapos, papeles o EPPs abandonados sobre máquinas',
+            'Rejillas de drenaje y cableado libres de objetos sueltos'
           ]
         },
         '3': {
           name: 'Zona 3',
           points: [
-            'Zona cockpit recogida y protecciones colocadas',
-            'Conectores y zonas expuestas protegidos o tapados',
-            'Sin herramientas ni elementos no autorizados dentro de avión',
-            'Sin virutas ni FOD en suelo / gradas / bancos'
+            'Pasillos de tránsito peatonal y carros libres de obstáculos',
+            'Cajas de subconjuntos aeronáuticos tapadas y protegidas',
+            'Zona de consumibles sin precintos, alambres o plásticos en el suelo',
+            'Carros de transporte de piezas limpios antes de cambio de turno'
           ]
         }
       },
       roster: {
         'CW42': {
           'Mañana': {
-            '1': { empId: '10234', name: 'Jose Javier Fernández' },
-            '2': { empId: '10512', name: 'Alberto Alameda' },
-            '3': { empId: '10890', name: 'Nicolás Jarillo' }
+            '1': { empId: '10234', name: 'Carlos Mendoza' },
+            '2': { empId: '10512', name: 'Laura Gómez' },
+            '3': { empId: '10890', name: 'Javier Ruiz' }
           }
         }
       },
@@ -563,24 +549,12 @@
       return clean;
     }
 
-    function getZoneIds() {
-      return Object.keys(appState.zones || {}).sort((a, b) => Number(a) - Number(b));
-    }
-
     function normalizeState(rawObj) {
       const merged = Object.assign(JSON.parse(JSON.stringify(defaultState)), rawObj || {});
       if (!Array.isArray(merged.inspections)) merged.inspections = Object.values(merged.inspections || {});
       if (!Array.isArray(merged.incidents)) merged.incidents = Object.values(merged.incidents || {});
       if (!merged.roster) merged.roster = {};
-      if (!merged.zones || Object.keys(merged.zones).length === 0) {
-        merged.zones = JSON.parse(JSON.stringify(defaultState.zones));
-      } else {
-        Object.keys(merged.zones).forEach(zid => {
-          if (!Array.isArray(merged.zones[zid].points)) {
-            merged.zones[zid].points = Object.values(merged.zones[zid].points || {});
-          }
-        });
-      }
+      if (!merged.zones) merged.zones = JSON.parse(JSON.stringify(defaultState.zones));
       return merged;
     }
 
@@ -599,27 +573,6 @@
       if (firebaseBaseUrl && !isApplyingRemoteUpdate) {
         pushToCloud(false);
       }
-    }
-
-    function populateZoneSelects() {
-      const zoneIds = getZoneIds();
-      ['ronda-zone', 'config-zone-select'].forEach(selectId => {
-        const sel = document.getElementById(selectId);
-        if (!sel) return;
-        const prevVal = sel.value;
-        sel.innerHTML = '';
-        zoneIds.forEach(zid => {
-          const opt = document.createElement('option');
-          opt.value = zid;
-          opt.textContent = appState.zones[zid].name;
-          sel.appendChild(opt);
-        });
-        if (prevVal && appState.zones[prevVal]) {
-          sel.value = prevVal;
-        } else if (zoneIds.length > 0) {
-          sel.value = zoneIds[0];
-        }
-      });
     }
 
     function updateCloudIndicator(status, label) {
@@ -658,14 +611,13 @@
     async function pullFromCloud(notifyUser = false) {
       if (!firebaseBaseUrl) return;
       try {
-        const res = await fetch(`${firebaseBaseUrl}/fod_getafe_state.json`, { cache: 'no-store' });
+        const res = await fetch(`${firebaseBaseUrl}/fod_getafe_state.json`);
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const remoteData = await res.json();
         if (remoteData) {
           isApplyingRemoteUpdate = true;
           appState = normalizeState(remoteData);
           localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-          populateZoneSelects();
           refreshActiveViews();
           isApplyingRemoteUpdate = false;
           updateCloudIndicator('online', 'Cloud Activo');
@@ -699,7 +651,6 @@
               isApplyingRemoteUpdate = true;
               appState = normalizeState(packet.data);
               localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-              populateZoneSelects();
               refreshActiveViews();
               isApplyingRemoteUpdate = false;
               updateCloudIndicator('online', 'Cloud Activo');
@@ -731,7 +682,6 @@
     }
 
     function refreshActiveViews() {
-      populateZoneSelects();
       updatePendingIncidentsBadge();
       if (!document.getElementById('tab-ronda').classList.contains('hidden')) onRondaContextChange();
       if (!document.getElementById('tab-incidencias').classList.contains('hidden')) renderIncidents();
@@ -811,9 +761,6 @@
       refreshActiveViews();
     }
 
-    // ==========================================
-    // PESTAÑA 1: RONDA FOD (OK / NO OK / N/A)
-    // ==========================================
     function onRondaContextChange() {
       const cw = document.getElementById('ronda-cw').value;
       const day = document.getElementById('ronda-day').value;
@@ -859,58 +806,43 @@
       const container = document.getElementById('ronda-checklist-container');
       container.innerHTML = '';
 
-      if (!zone) return;
-
       (zone.points || []).forEach((pointText, idx) => {
         const pState = currentRondaPointsState[idx] || { status: null, comment: '', photo: null };
         const isOk = pState.status === 'OK';
         const isNok = pState.status === 'NOK';
-        const isNa = pState.status === 'NA';
 
         const card = document.createElement('div');
         card.className = `bg-white rounded-xl shadow-sm border transition-all p-3.5 ${
-          isOk ? 'border-emerald-400 bg-emerald-50/20' :
-          isNok ? 'border-red-400 bg-red-50/20' :
-          isNa ? 'border-slate-400 bg-slate-100/60' : 'border-slate-200'
+          isOk ? 'border-emerald-400 bg-emerald-50/20' : isNok ? 'border-red-400 bg-red-50/20' : 'border-slate-200'
         }`;
 
         card.innerHTML = `
           <div class="flex items-start justify-between gap-3">
             <div class="flex items-start space-x-2.5">
               <span class="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-0.5 rounded-md mt-0.5">${idx + 1}</span>
-              <p class="text-sm font-semibold ${isNa ? 'text-slate-500 line-through' : 'text-slate-800'} leading-snug">${pointText}</p>
+              <p class="text-sm font-semibold text-slate-800 leading-snug">${pointText}</p>
             </div>
           </div>
 
-          <div class="grid grid-cols-3 gap-2 mt-3">
+          <div class="grid grid-cols-2 gap-2.5 mt-3">
             <button type="button" onclick="setPointStatus(${idx}, 'OK')"
-              class="py-2 px-2 rounded-lg font-bold text-xs flex items-center justify-center space-x-1 border transition ${
+              class="py-2 px-3 rounded-lg font-bold text-xs flex items-center justify-center space-x-1.5 border transition ${
                 isOk
                   ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
                   : 'bg-slate-50 text-slate-600 border-slate-300 hover:bg-emerald-50'
               }">
               <i class="fa-solid fa-check"></i>
-              <span>OK</span>
+              <span>OK (VERDE)</span>
             </button>
 
             <button type="button" onclick="setPointStatus(${idx}, 'NOK')"
-              class="py-2 px-2 rounded-lg font-bold text-xs flex items-center justify-center space-x-1 border transition ${
+              class="py-2 px-3 rounded-lg font-bold text-xs flex items-center justify-center space-x-1.5 border transition ${
                 isNok
                   ? 'bg-red-600 text-white border-red-600 shadow-sm'
                   : 'bg-slate-50 text-slate-600 border-slate-300 hover:bg-red-50'
               }">
               <i class="fa-solid fa-xmark"></i>
-              <span>NO OK</span>
-            </button>
-
-            <button type="button" onclick="setPointStatus(${idx}, 'NA')"
-              class="py-2 px-2 rounded-lg font-bold text-xs flex items-center justify-center space-x-1 border transition ${
-                isNa
-                  ? 'bg-slate-600 text-white border-slate-600 shadow-sm'
-                  : 'bg-slate-50 text-slate-600 border-slate-300 hover:bg-slate-200'
-              }">
-              <i class="fa-solid fa-ban"></i>
-              <span>N/A</span>
+              <span>NO OK (ROJO)</span>
             </button>
           </div>
 
@@ -988,14 +920,13 @@
 
     function updateRondaBanner() {
       const zoneId = document.getElementById('ronda-zone').value;
-      const zone = appState.zones[zoneId];
-      const totalPoints = zone ? (zone.points || []).length : 0;
+      const totalPoints = (appState.zones[zoneId].points || []).length;
       let checkedCount = 0;
       let hasNok = false;
 
       for (let i = 0; i < totalPoints; i++) {
         const st = currentRondaPointsState[i]?.status;
-        if (st === 'OK' || st === 'NOK' || st === 'NA') checkedCount++;
+        if (st === 'OK' || st === 'NOK') checkedCount++;
         if (st === 'NOK') hasNok = true;
       }
 
@@ -1034,15 +965,13 @@
         return;
       }
 
-      const zone = appState.zones[zoneId];
-      if (!zone) return;
-      const points = zone.points || [];
+      const points = appState.zones[zoneId].points || [];
       let hasNok = false;
 
       for (let i = 0; i < points.length; i++) {
         const st = currentRondaPointsState[i]?.status;
         if (!st) {
-          alert(`Falta por revisar el punto #${i + 1} del checklist (marca OK, NO OK o N/A).`);
+          alert(`Falta por revisar el punto #${i + 1} del checklist.`);
           return;
         }
         if (st === 'NOK') {
@@ -1066,7 +995,7 @@
         day,
         shift,
         zoneId,
-        zoneName: zone.name,
+        zoneName: appState.zones[zoneId].name,
         empId,
         empName,
         result: resultStatus,
@@ -1092,7 +1021,7 @@
             day,
             shift,
             zoneId,
-            zoneName: zone.name,
+            zoneName: appState.zones[zoneId].name,
             pointText,
             empId,
             empName,
@@ -1114,9 +1043,6 @@
       showToast(`Ronda guardada como ${resultStatus}`);
     }
 
-    // ==========================================
-    // PESTAÑA 2: INCIDENCIAS FOD
-    // ==========================================
     function renderIncidents() {
       const cwFilter = document.getElementById('filter-inc-cw').value;
       const dayFilter = document.getElementById('filter-inc-day').value;
@@ -1145,7 +1071,6 @@
       }
 
       filtered.forEach(inc => {
-        const displayZoneName = appState.zones[inc.zoneId]?.name || inc.zoneName;
         const card = document.createElement('div');
         card.className = `bg-white rounded-xl shadow-sm border-l-4 p-4 space-y-3 ${
           inc.resolved ? 'border-l-emerald-500 border-slate-200' : 'border-l-red-600 border-slate-200'
@@ -1157,7 +1082,7 @@
               <div class="flex flex-wrap items-center gap-1.5">
                 <span class="bg-slate-900 text-white text-[11px] font-bold px-2 py-0.5 rounded">${inc.cw}</span>
                 <span class="bg-slate-100 text-slate-700 text-[11px] font-bold px-2 py-0.5 rounded">${inc.day} · ${inc.shift}</span>
-                <span class="bg-blue-50 text-blue-800 text-[11px] font-bold px-2 py-0.5 rounded">${displayZoneName}</span>
+                <span class="bg-blue-50 text-blue-800 text-[11px] font-bold px-2 py-0.5 rounded">${inc.zoneName}</span>
               </div>
               <h3 class="text-xs font-bold text-slate-500 mt-1.5">Punto: <span class="text-slate-800">${inc.pointText}</span></h3>
             </div>
@@ -1174,7 +1099,7 @@
               <p class="text-[11px] text-slate-500">Detectado por: <strong>${inc.empName}</strong> (Nº ${inc.empId})</p>
             </div>
             ${inc.photo ? `
-              <img src="${inc.photo}" onclick="openPhotoModal('${inc.photo}', '${displayZoneName} - ${inc.day}')"
+              <img src="${inc.photo}" onclick="openPhotoModal('${inc.photo}', '${inc.zoneName} - ${inc.day}')"
                 class="h-14 w-14 object-cover rounded-lg border border-slate-300 shrink-0 cursor-pointer hover:opacity-90">
             ` : ''}
           </div>
@@ -1243,16 +1168,12 @@
       }
     }
 
-    // ==========================================
-    // PESTAÑA 3: CUADRANTE SEMANAL DINÁMICO
-    // ==========================================
     function renderRoster() {
       const cw = document.getElementById('roster-cw').value;
       const container = document.getElementById('roster-grid-container');
       container.innerHTML = '';
 
       if (!appState.roster[cw]) appState.roster[cw] = {};
-      const zoneIds = getZoneIds();
 
       SHIFTS.forEach(shift => {
         if (!appState.roster[cw][shift]) appState.roster[cw][shift] = {};
@@ -1260,7 +1181,7 @@
         block.className = 'border border-slate-200 rounded-xl overflow-hidden';
 
         let rowsHtml = '';
-        zoneIds.forEach(zoneId => {
+        ['1', '2', '3'].forEach(zoneId => {
           const current = appState.roster[cw][shift][zoneId] || { empId: '', name: '' };
           rowsHtml += `
             <div class="p-2.5 bg-white grid grid-cols-1 sm:grid-cols-12 gap-2 items-center">
@@ -1308,24 +1229,12 @@
       showToast(`Cuadrante de ${cw} publicado`);
     }
 
-    // ==========================================
-    // PESTAÑA 4: INFORME DIARIO PDF DINÁMICO
-    // ==========================================
     function renderReportPreview() {
       const cw = document.getElementById('report-cw').value;
       const day = document.getElementById('report-day').value;
-      const zoneIds = getZoneIds();
 
       document.getElementById('pdf-header-date').textContent = `${cw} - ${day}`;
       document.getElementById('pdf-header-timestamp').textContent = `Generado: ${new Date().toLocaleString('es-ES')}`;
-
-      // Cabecera dinámica de tabla según las zonas configuradas
-      const theadTr = document.getElementById('pdf-rondas-thead-tr');
-      let headHtml = `<th class="p-2 font-bold">Turno</th>`;
-      zoneIds.forEach(zid => {
-        headHtml += `<th class="p-2 font-bold">${appState.zones[zid].name}</th>`;
-      });
-      theadTr.innerHTML = headHtml;
 
       const tbody = document.getElementById('pdf-rondas-tbody');
       tbody.innerHTML = '';
@@ -1334,7 +1243,7 @@
         const tr = document.createElement('tr');
         let cells = `<td class="p-2 font-bold text-slate-800">${shift}</td>`;
 
-        zoneIds.forEach(zoneId => {
+        ['1', '2', '3'].forEach(zoneId => {
           const ins = appState.inspections.find(
             i => i.cw === cw && i.day === day && i.shift === shift && i.zoneId === zoneId
           );
@@ -1369,13 +1278,12 @@
         `;
       } else {
         dayIncidents.forEach(inc => {
-          const displayZoneName = appState.zones[inc.zoneId]?.name || inc.zoneName;
           const item = document.createElement('div');
           item.className = 'p-3 border border-slate-200 rounded-lg flex items-start justify-between gap-3 text-xs';
           item.innerHTML = `
             <div class="space-y-1">
               <div class="font-bold text-slate-900">
-                [${inc.shift} - ${displayZoneName}] ${inc.pointText}
+                [${inc.shift} - ${inc.zoneName}] ${inc.pointText}
               </div>
               <div class="text-slate-700"><strong>Hallazgo:</strong> ${inc.description}</div>
               <div class="text-[11px] text-slate-500">
@@ -1409,88 +1317,23 @@
       html2pdf().set(opt).from(element).save();
     }
 
-    // ==========================================
-    // PESTAÑA 5: GESTIÓN DE ZONAS Y CONFIGURACIÓN
-    // ==========================================
     function renderConfigChecklist() {
       document.getElementById('firebase-url-input').value = firebaseBaseUrl || '';
       const zoneId = document.getElementById('config-zone-select').value;
-      const zone = appState.zones[zoneId];
       const list = document.getElementById('config-points-list');
-      const nameInput = document.getElementById('edit-zone-name-input');
       list.innerHTML = '';
 
-      if (!zone) return;
-      nameInput.value = zone.name;
-
-      (zone.points || []).forEach((pt, idx) => {
+      (appState.zones[zoneId].points || []).forEach((pt, idx) => {
         const li = document.createElement('li');
         li.className = 'p-3 bg-white flex items-center justify-between gap-2 text-xs font-medium text-slate-800';
         li.innerHTML = `
           <span><strong class="text-slate-400 mr-1.5">#${idx + 1}</strong> ${pt}</span>
-          <button onclick="removeConfigPoint(${idx})" class="text-red-500 hover:bg-red-50 p-1.5 rounded-lg transition" title="Borrar punto">
+          <button onclick="removeConfigPoint(${idx})" class="text-red-500 hover:bg-red-50 p-1.5 rounded-lg transition">
             <i class="fa-solid fa-trash-can"></i>
           </button>
         `;
         list.appendChild(li);
       });
-    }
-
-    function renameSelectedZone() {
-      const zoneId = document.getElementById('config-zone-select').value;
-      const newName = document.getElementById('edit-zone-name-input').value.trim();
-      if (!newName) {
-        alert('El nombre de la zona no puede estar vacío.');
-        return;
-      }
-      if (appState.zones[zoneId]) {
-        appState.zones[zoneId].name = newName;
-        saveState();
-        populateZoneSelects();
-        renderConfigChecklist();
-        showToast('Nombre de zona actualizado');
-      }
-    }
-
-    function addNewZone() {
-      const zoneIds = getZoneIds();
-      const nextNum = zoneIds.length > 0 ? Math.max(...zoneIds.map(Number)) + 1 : 1;
-      const defaultName = `Zona ${nextNum}`;
-      const customName = prompt('Introduce el nombre de la nueva zona:', defaultName);
-      if (customName === null) return;
-      const finalName = customName.trim() || defaultName;
-      const newId = String(nextNum);
-
-      appState.zones[newId] = {
-        name: finalName,
-        points: [
-          'Área limpia y libre de objetos extraños (FOD)'
-        ]
-      };
-
-      saveState();
-      populateZoneSelects();
-      document.getElementById('config-zone-select').value = newId;
-      document.getElementById('ronda-zone').value = newId;
-      renderConfigChecklist();
-      showToast(`Añadida ${finalName}`);
-    }
-
-    function deleteSelectedZone() {
-      const zoneIds = getZoneIds();
-      if (zoneIds.length <= 1) {
-        alert('Debe existir al menos una zona activa en el taller.');
-        return;
-      }
-      const zoneId = document.getElementById('config-zone-select').value;
-      const zoneName = appState.zones[zoneId]?.name || 'esta zona';
-      if (!confirm(`¿Seguro que deseas eliminar "${zoneName}" y todos sus puntos de control?`)) return;
-
-      delete appState.zones[zoneId];
-      saveState();
-      populateZoneSelects();
-      renderConfigChecklist();
-      showToast('Zona eliminada');
     }
 
     function addConfigPoint() {
@@ -1515,7 +1358,7 @@
     }
 
     function resetDemoData() {
-      if (confirm('¿Seguro que deseas restaurar las zonas por defecto (Zona 1, Zona 2, Zona 3) y limpiar el historial guardado?')) {
+      if (confirm('¿Seguro que deseas restaurar los puntos y borrar el historial guardado?')) {
         localStorage.removeItem(STORAGE_KEY);
         appState = JSON.parse(JSON.stringify(defaultState));
         saveState();
@@ -1539,7 +1382,6 @@
         appState.currentCW = getCurrentISOWeek();
       }
       populateCWSelects();
-      populateZoneSelects();
       updatePendingIncidentsBadge();
       onRondaContextChange();
 
